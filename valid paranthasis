@@ -1,0 +1,38 @@
+import java.util.Stack;
+
+class Solution {
+    public boolean isValid(String s) {
+        Stack<Character> stack = new Stack<>();
+
+        for (char c : s.toCharArray()) {
+            if (c == '(' || c == '{' || c == '[') {
+                stack.push(c); // Push opening brackets to the stack
+            } else {
+                if (stack.isEmpty()) {
+                    return false; // No matching opening bracket
+                }
+                
+                char top = stack.pop(); // Get the last opened bracket
+                
+                if ((c == ')' && top != '(') ||
+                    (c == '}' && top != '{') ||
+                    (c == ']' && top != '[')) {
+                    return false; // Mismatched bracket
+                }
+            }
+        }
+
+        return stack.isEmpty(); // If stack is empty, brackets are balanced
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+
+        System.out.println(solution.isValid("()"));       // true
+        System.out.println(solution.isValid("()[]{}"));   // true
+        System.out.println(solution.isValid("(]"));       // false
+        System.out.println(solution.isValid("([])"));     // true
+        System.out.println(solution.isValid("{[()]}"));   // true
+        System.out.println(solution.isValid("([)]"));     // false
+    }
+}
