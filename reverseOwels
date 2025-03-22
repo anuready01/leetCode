@@ -1,0 +1,44 @@
+import java.util.*;
+
+class Solution {
+    public String reverseVowels(String s) {
+        // Convert string to char array for in-place modification
+        char[] chars = s.toCharArray();
+        int left = 0, right = chars.length - 1;
+        
+        // Define vowel set for quick lookup
+        Set<Character> vowels = new HashSet<>(Arrays.asList('a', 'e', 'i', 'o', 'u', 
+                                                             'A', 'E', 'I', 'O', 'U'));
+
+        // Two-pointer approach
+        while (left < right) {
+            // Move left pointer to a vowel
+            while (left < right && !vowels.contains(chars[left])) {
+                left++;
+            }
+            // Move right pointer to a vowel
+            while (left < right && !vowels.contains(chars[right])) {
+                right--;
+            }
+
+            // Swap vowels
+            char temp = chars[left];
+            chars[left] = chars[right];
+            chars[right] = temp;
+
+            // Move pointers inward
+            left++;
+            right--;
+        }
+
+        return new String(chars);
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+
+        System.out.println(solution.reverseVowels("IceCreAm")); // Output: "AceCreIm"
+        System.out.println(solution.reverseVowels("leetcode")); // Output: "leotcede"
+    }
+}
