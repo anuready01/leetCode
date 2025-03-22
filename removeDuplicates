@@ -1,0 +1,46 @@
+import java.util.*;
+
+class Solution {
+    public String removeDuplicateLetters(String s) {
+        Stack<Character> stack = new Stack<>();
+        Map<Character, Integer> lastIndex = new HashMap<>();
+        Set<Character> seen = new HashSet<>();
+
+        // Step 1: Store last occurrence index of each character
+        for (int i = 0; i < s.length(); i++) {
+            lastIndex.put(s.charAt(i), i);
+        }
+
+        // Step 2: Iterate over the string
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            
+            // If character is already in result, skip it
+            if (seen.contains(ch)) continue;
+            
+            // Maintain lexicographical order by removing larger characters from stack
+            while (!stack.isEmpty() && stack.peek() > ch && lastIndex.get(stack.peek()) > i) {
+                seen.remove(stack.pop());
+            }
+
+            // Add current character to stack and mark it as seen
+            stack.push(ch);
+            seen.add(ch);
+        }
+
+        // Step 3: Convert stack to string
+        StringBuilder result = new StringBuilder();
+        for (char c : stack) {
+            result.append(c);
+        }
+
+        return result.toString();
+    }
+}
+public class Main {
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        System.out.println(solution.removeDuplicateLetters("bcabc"));  // Output: "abc"
+        System.out.println(solution.removeDuplicateLetters("cbacdcbc")); // Output: "acdb"
+    }
+}
