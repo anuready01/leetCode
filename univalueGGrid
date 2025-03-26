@@ -1,0 +1,51 @@
+import java.util.Arrays;
+
+public class MinOperationsToUniValueGrid {
+    public static int minOperations(int[][] grid, int x) {
+        int m = grid.length, n = grid[0].length;
+        int size = m * n;
+        int[] values = new int[size];
+        
+        // Flatten the grid into a 1D array
+        int index = 0;
+        for (int[] row : grid) {
+            for (int num : row) {
+                values[index++] = num;
+            }
+        }
+        
+        // Check if it's possible to make all elements equal
+        int remainder = values[0] % x;
+        for (int num : values) {
+            if (num % x != remainder) {
+                return -1; // Not possible
+            }
+        }
+        
+        // Sort to find the median
+        Arrays.sort(values);
+        int median = values[size / 2];
+        
+        // Compute the total operations needed
+        int operations = 0;
+        for (int num : values) {
+            operations += Math.abs(num - median) / x;
+        }
+        
+        return operations;
+    }
+
+    public static void main(String[] args) {
+        int[][] grid1 = {{2, 4}, {6, 8}};
+        int x1 = 2;
+        System.out.println(minOperations(grid1, x1)); // Output: 4
+
+        int[][] grid2 = {{1, 5}, {2, 3}};
+        int x2 = 1;
+        System.out.println(minOperations(grid2, x2)); // Output: 5
+
+        int[][] grid3 = {{1, 2}, {3, 4}};
+        int x3 = 2;
+        System.out.println(minOperations(grid3, x3)); // Output: -1
+    }
+}
